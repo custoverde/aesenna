@@ -1,0 +1,64 @@
+.navigation-drawer {
+  position: fixed;
+  top: 0;
+  left: -280px;
+  height: 100vh;
+  width: 260px;
+  background-color: $color-d;
+  @include box-shadow(5);
+  transition: left 0.5s ease-in-out;
+
+  &--open {
+    left: 0;
+  }
+
+  &__head {
+    height: 44px;
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    padding-right: 12px;
+    background-color: $color-e;
+    color: $color-c;
+    @include box-shadow(3);
+
+    &__title {
+      flex: 1;
+      padding-left: 8px;
+      color: $color-c;
+    }
+
+    &__button {
+      background-color: transparent;
+      color: $color-d;
+      border: none;
+      cursor: pointer;
+    }
+  }
+
+  &__menu {
+    margin-top: 16px;
+    padding: 0 8px;
+
+    &__item {
+      display: block;
+      width: 100%;
+      background-color: transparent;
+      border: none;
+      display: flex;
+      align-items: center;
+      margin-bottom: 12px;
+      cursor: pointer;
+      padding: 6px 8px;
+      color: $color-b;
+
+      i {
+        margin-right: 8px;
+      }
+
+      &:hover {
+        background-color: rgba(255, 255, 255, 0.08);
+      }
+    }
+  }
+}

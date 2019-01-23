@@ -24549,7 +24549,7 @@ function reloadCSS() {
 }
 
 module.exports = reloadCSS;
-},{"./bundle-url":"../node_modules/parcel-bundler/src/builtins/bundle-url.js"}],"index.scss":[function(require,module,exports) {
+},{"./bundle-url":"../node_modules/parcel-bundler/src/builtins/bundle-url.js"}],"styles/index.scss":[function(require,module,exports) {
 var reloadCSS = require('_css_loader');
 
 module.hot.dispose(reloadCSS);
@@ -29084,7 +29084,84 @@ var _matchPath2 = _interopRequireDefault(require("./matchPath"));
 var _withRouter2 = _interopRequireDefault(require("./withRouter"));
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-},{"./BrowserRouter":"../node_modules/react-router-dom/es/BrowserRouter.js","./HashRouter":"../node_modules/react-router-dom/es/HashRouter.js","./Link":"../node_modules/react-router-dom/es/Link.js","./MemoryRouter":"../node_modules/react-router-dom/es/MemoryRouter.js","./NavLink":"../node_modules/react-router-dom/es/NavLink.js","./Prompt":"../node_modules/react-router-dom/es/Prompt.js","./Redirect":"../node_modules/react-router-dom/es/Redirect.js","./Route":"../node_modules/react-router-dom/es/Route.js","./Router":"../node_modules/react-router-dom/es/Router.js","./StaticRouter":"../node_modules/react-router-dom/es/StaticRouter.js","./Switch":"../node_modules/react-router-dom/es/Switch.js","./generatePath":"../node_modules/react-router-dom/es/generatePath.js","./matchPath":"../node_modules/react-router-dom/es/matchPath.js","./withRouter":"../node_modules/react-router-dom/es/withRouter.js"}],"containers/Alunos.js":[function(require,module,exports) {
+},{"./BrowserRouter":"../node_modules/react-router-dom/es/BrowserRouter.js","./HashRouter":"../node_modules/react-router-dom/es/HashRouter.js","./Link":"../node_modules/react-router-dom/es/Link.js","./MemoryRouter":"../node_modules/react-router-dom/es/MemoryRouter.js","./NavLink":"../node_modules/react-router-dom/es/NavLink.js","./Prompt":"../node_modules/react-router-dom/es/Prompt.js","./Redirect":"../node_modules/react-router-dom/es/Redirect.js","./Route":"../node_modules/react-router-dom/es/Route.js","./Router":"../node_modules/react-router-dom/es/Router.js","./StaticRouter":"../node_modules/react-router-dom/es/StaticRouter.js","./Switch":"../node_modules/react-router-dom/es/Switch.js","./generatePath":"../node_modules/react-router-dom/es/generatePath.js","./matchPath":"../node_modules/react-router-dom/es/matchPath.js","./withRouter":"../node_modules/react-router-dom/es/withRouter.js"}],"containers/Home.js":[function(require,module,exports) {
+"use strict";
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.default = void 0;
+
+var _react = _interopRequireDefault(require("react"));
+
+var _reactRouterDom = require("react-router-dom");
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof = function _typeof(obj) { return typeof obj; }; } else { _typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof(obj); }
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
+
+function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); return Constructor; }
+
+function _possibleConstructorReturn(self, call) { if (call && (_typeof(call) === "object" || typeof call === "function")) { return call; } return _assertThisInitialized(self); }
+
+function _assertThisInitialized(self) { if (self === void 0) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return self; }
+
+function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.getPrototypeOf : function _getPrototypeOf(o) { return o.__proto__ || Object.getPrototypeOf(o); }; return _getPrototypeOf(o); }
+
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function"); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, writable: true, configurable: true } }); if (superClass) _setPrototypeOf(subClass, superClass); }
+
+function _setPrototypeOf(o, p) { _setPrototypeOf = Object.setPrototypeOf || function _setPrototypeOf(o, p) { o.__proto__ = p; return o; }; return _setPrototypeOf(o, p); }
+
+var Home =
+/*#__PURE__*/
+function (_React$Component) {
+  _inherits(Home, _React$Component);
+
+  function Home() {
+    _classCallCheck(this, Home);
+
+    return _possibleConstructorReturn(this, _getPrototypeOf(Home).apply(this, arguments));
+  }
+
+  _createClass(Home, [{
+    key: "render",
+    value: function render() {
+      var history = this.props.history;
+      return _react.default.createElement("div", {
+        className: "home"
+      }, _react.default.createElement("div", {
+        className: "home__title"
+      }, _react.default.createElement("h1", null, "Servicos"), _react.default.createElement("button", {
+        className: "home__title__button",
+        onClick: function onClick() {
+          history.push("/turmas");
+        }
+      }, _react.default.createElement("i", {
+        className: "material-icons"
+      }, "class"), _react.default.createElement("span", null, "Aula Te\xF3rica"))), _react.default.createElement("div", {
+        className: "home__title"
+      }, _react.default.createElement("h1", null, "Cadastros"), _react.default.createElement("button", {
+        className: "home__title__button",
+        onClick: function onClick() {
+          history.push("/alunos");
+        }
+      }, _react.default.createElement("i", {
+        className: "material-icons"
+      }, "person"), _react.default.createElement("span", null, "Alunos"))));
+    }
+  }]);
+
+  return Home;
+}(_react.default.Component);
+
+var _default = (0, _reactRouterDom.withRouter)(Home);
+
+exports.default = _default;
+},{"react":"../node_modules/react/index.js","react-router-dom":"../node_modules/react-router-dom/es/index.js"}],"containers/Alunos.js":[function(require,module,exports) {
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -29287,7 +29364,21 @@ function (_React$Component) {
   _createClass(AppBar, [{
     key: "render",
     value: function render() {
-      return _react.default.createElement("h1", null, " APP BAR ");
+      var _this$props = this.props,
+          isLoading = _this$props.isLoading,
+          onOpenMenu = _this$props.onOpenMenu;
+      return _react.default.createElement("div", {
+        className: "app-bar"
+      }, _react.default.createElement("div", {
+        className: "app-bar__container"
+      }, _react.default.createElement("button", {
+        className: "app-bar__action",
+        onClick: onOpenMenu
+      }, _react.default.createElement("i", {
+        className: "material-icons"
+      }, "menu")), _react.default.createElement("span", {
+        className: "app-bar__brand"
+      }, " Auto Escola Senna")));
     }
   }]);
 
@@ -29296,7 +29387,163 @@ function (_React$Component) {
 
 var _default = AppBar;
 exports.default = _default;
-},{"react":"../node_modules/react/index.js"}],"containers/App.js":[function(require,module,exports) {
+},{"react":"../node_modules/react/index.js"}],"../node_modules/classnames/index.js":[function(require,module,exports) {
+var define;
+/*!
+  Copyright (c) 2017 Jed Watson.
+  Licensed under the MIT License (MIT), see
+  http://jedwatson.github.io/classnames
+*/
+/* global define */
+
+(function () {
+	'use strict';
+
+	var hasOwn = {}.hasOwnProperty;
+
+	function classNames () {
+		var classes = [];
+
+		for (var i = 0; i < arguments.length; i++) {
+			var arg = arguments[i];
+			if (!arg) continue;
+
+			var argType = typeof arg;
+
+			if (argType === 'string' || argType === 'number') {
+				classes.push(arg);
+			} else if (Array.isArray(arg) && arg.length) {
+				var inner = classNames.apply(null, arg);
+				if (inner) {
+					classes.push(inner);
+				}
+			} else if (argType === 'object') {
+				for (var key in arg) {
+					if (hasOwn.call(arg, key) && arg[key]) {
+						classes.push(key);
+					}
+				}
+			}
+		}
+
+		return classes.join(' ');
+	}
+
+	if (typeof module !== 'undefined' && module.exports) {
+		classNames.default = classNames;
+		module.exports = classNames;
+	} else if (typeof define === 'function' && typeof define.amd === 'object' && define.amd) {
+		// register as 'classnames', consistent with npm package name
+		define('classnames', [], function () {
+			return classNames;
+		});
+	} else {
+		window.classNames = classNames;
+	}
+}());
+
+},{}],"components/NavigationDrawer.js":[function(require,module,exports) {
+"use strict";
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.default = void 0;
+
+var _react = _interopRequireDefault(require("react"));
+
+var _classnames = _interopRequireDefault(require("classnames"));
+
+var _reactRouterDom = require("react-router-dom");
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof = function _typeof(obj) { return typeof obj; }; } else { _typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof(obj); }
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
+
+function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); return Constructor; }
+
+function _possibleConstructorReturn(self, call) { if (call && (_typeof(call) === "object" || typeof call === "function")) { return call; } return _assertThisInitialized(self); }
+
+function _assertThisInitialized(self) { if (self === void 0) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return self; }
+
+function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.getPrototypeOf : function _getPrototypeOf(o) { return o.__proto__ || Object.getPrototypeOf(o); }; return _getPrototypeOf(o); }
+
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function"); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, writable: true, configurable: true } }); if (superClass) _setPrototypeOf(subClass, superClass); }
+
+function _setPrototypeOf(o, p) { _setPrototypeOf = Object.setPrototypeOf || function _setPrototypeOf(o, p) { o.__proto__ = p; return o; }; return _setPrototypeOf(o, p); }
+
+var NagitationDrawer =
+/*#__PURE__*/
+function (_React$Component) {
+  _inherits(NagitationDrawer, _React$Component);
+
+  function NagitationDrawer() {
+    _classCallCheck(this, NagitationDrawer);
+
+    return _possibleConstructorReturn(this, _getPrototypeOf(NagitationDrawer).apply(this, arguments));
+  }
+
+  _createClass(NagitationDrawer, [{
+    key: "render",
+    value: function render() {
+      var _this$props = this.props,
+          isOpen = _this$props.isOpen,
+          onCloseMenu = _this$props.onCloseMenu,
+          history = _this$props.history;
+      return _react.default.createElement("div", {
+        className: (0, _classnames.default)("navigation-drawer", {
+          "navigation-drawer--open": isOpen
+        })
+      }, _react.default.createElement("div", {
+        className: "navigation-drawer__head"
+      }, _react.default.createElement("span", {
+        className: "navigation-drawer__head__title"
+      }, "Menu de Op\xE7oes"), _react.default.createElement("button", {
+        className: "navigation-drawer__head__button",
+        onClick: onCloseMenu
+      }, _react.default.createElement("i", {
+        className: "material-icons"
+      }, "close"))), _react.default.createElement("div", {
+        className: "navigation-drawer__menu"
+      }, _react.default.createElement("button", {
+        className: "navigation-drawer__menu__item",
+        onClick: function onClick() {
+          onCloseMenu();
+          history.push("/");
+        }
+      }, _react.default.createElement("i", {
+        className: "material-icons"
+      }, "home"), " P\xE1gina Inicial"), _react.default.createElement("button", {
+        className: "navigation-drawer__menu__item",
+        onClick: function onClick() {
+          onCloseMenu();
+          history.push("/alunos");
+        }
+      }, _react.default.createElement("i", {
+        className: "material-icons"
+      }, "person"), " Alunos"), _react.default.createElement("button", {
+        className: "navigation-drawer__menu__item",
+        onClick: function onClick() {
+          onCloseMenu();
+          history.push("/turmas");
+        }
+      }, _react.default.createElement("i", {
+        className: "material-icons"
+      }, "class"), " Turmas")));
+    }
+  }]);
+
+  return NagitationDrawer;
+}(_react.default.Component);
+
+var _default = (0, _reactRouterDom.withRouter)(NagitationDrawer);
+
+exports.default = _default;
+},{"react":"../node_modules/react/index.js","classnames":"../node_modules/classnames/index.js","react-router-dom":"../node_modules/react-router-dom/es/index.js"}],"containers/App.js":[function(require,module,exports) {
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -29308,6 +29555,8 @@ var _react = _interopRequireWildcard(require("react"));
 
 var _reactRouterDom = require("react-router-dom");
 
+var _Home = _interopRequireDefault(require("./Home"));
+
 var _Alunos = _interopRequireDefault(require("./Alunos"));
 
 var _Turmas = _interopRequireDefault(require("./Turmas"));
@@ -29315,6 +29564,8 @@ var _Turmas = _interopRequireDefault(require("./Turmas"));
 var _AlunosTurma = _interopRequireDefault(require("./turmas/AlunosTurma"));
 
 var _AppBar = _interopRequireDefault(require("../components/AppBar"));
+
+var _NavigationDrawer = _interopRequireDefault(require("../components/NavigationDrawer"));
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -29344,18 +29595,47 @@ function (_React$Component) {
   _inherits(App, _React$Component);
 
   function App() {
+    var _getPrototypeOf2;
+
+    var _this;
+
+    var _temp;
+
     _classCallCheck(this, App);
 
-    return _possibleConstructorReturn(this, _getPrototypeOf(App).apply(this, arguments));
+    for (var _len = arguments.length, args = new Array(_len), _key = 0; _key < _len; _key++) {
+      args[_key] = arguments[_key];
+    }
+
+    return _possibleConstructorReturn(_this, (_temp = _this = _possibleConstructorReturn(this, (_getPrototypeOf2 = _getPrototypeOf(App)).call.apply(_getPrototypeOf2, [this].concat(args))), _this.state = {
+      alunos: [],
+      turmas: [],
+      isLoading: false,
+      isMenuOpen: false
+    }, _this.handleOpenMenu = function () {
+      _this.setState({
+        isMenuOpen: true
+      });
+    }, _this.handleCloseMenu = function () {
+      _this.setState({
+        isMenuOpen: false
+      });
+    }, _temp));
   }
 
   _createClass(App, [{
     key: "render",
     value: function render() {
-      return _react.default.createElement(_reactRouterDom.BrowserRouter, null, _react.default.createElement("div", null, _react.default.createElement(_AppBar.default, null), _react.default.createElement(_react.Fragment, null, _react.default.createElement(_reactRouterDom.Route, {
+      var _this$state = this.state,
+          isLoading = _this$state.isLoading,
+          isMenuOpen = _this$state.isMenuOpen;
+      return _react.default.createElement(_reactRouterDom.BrowserRouter, null, _react.default.createElement("div", null, _react.default.createElement(_AppBar.default, {
+        isLoading: isLoading,
+        onOpenMenu: this.handleOpenMenu
+      }), _react.default.createElement(_react.Fragment, null, _react.default.createElement(_reactRouterDom.Route, {
         path: "/",
         exact: true,
-        component: _Alunos.default
+        component: _Home.default
       }), _react.default.createElement(_reactRouterDom.Route, {
         path: "/alunos",
         component: _Alunos.default
@@ -29365,7 +29645,10 @@ function (_React$Component) {
       }), _react.default.createElement(_reactRouterDom.Route, {
         path: "/turmas/alunos",
         component: _AlunosTurma.default
-      }))));
+      })), _react.default.createElement(_NavigationDrawer.default, {
+        isOpen: isMenuOpen,
+        onCloseMenu: this.handleCloseMenu
+      })));
     }
   }]);
 
@@ -29374,21 +29657,21 @@ function (_React$Component) {
 
 var _default = App;
 exports.default = _default;
-},{"react":"../node_modules/react/index.js","react-router-dom":"../node_modules/react-router-dom/es/index.js","./Alunos":"containers/Alunos.js","./Turmas":"containers/Turmas.js","./turmas/AlunosTurma":"containers/turmas/AlunosTurma.js","../components/AppBar":"components/AppBar.js"}],"index.js":[function(require,module,exports) {
+},{"react":"../node_modules/react/index.js","react-router-dom":"../node_modules/react-router-dom/es/index.js","./Home":"containers/Home.js","./Alunos":"containers/Alunos.js","./Turmas":"containers/Turmas.js","./turmas/AlunosTurma":"containers/turmas/AlunosTurma.js","../components/AppBar":"components/AppBar.js","../components/NavigationDrawer":"components/NavigationDrawer.js"}],"index.js":[function(require,module,exports) {
 "use strict";
 
 var _react = _interopRequireDefault(require("react"));
 
 var _reactDom = _interopRequireDefault(require("react-dom"));
 
-require("./index.scss");
+require("./styles/index.scss");
 
 var _App = _interopRequireDefault(require("./containers/App"));
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 _reactDom.default.render(_react.default.createElement(_App.default, null), document.getElementById('root'));
-},{"react":"../node_modules/react/index.js","react-dom":"../node_modules/react-dom/index.js","./index.scss":"index.scss","./containers/App":"containers/App.js"}],"../node_modules/parcel-bundler/src/builtins/hmr-runtime.js":[function(require,module,exports) {
+},{"react":"../node_modules/react/index.js","react-dom":"../node_modules/react-dom/index.js","./styles/index.scss":"styles/index.scss","./containers/App":"containers/App.js"}],"../node_modules/parcel-bundler/src/builtins/hmr-runtime.js":[function(require,module,exports) {
 var global = arguments[3];
 var OVERLAY_ID = '__parcel__error__overlay__';
 var OldModule = module.bundle.Module;
@@ -29415,7 +29698,7 @@ var parent = module.bundle.parent;
 if ((!parent || !parent.isParcelRequire) && typeof WebSocket !== 'undefined') {
   var hostname = "" || location.hostname;
   var protocol = location.protocol === 'https:' ? 'wss' : 'ws';
-  var ws = new WebSocket(protocol + '://' + hostname + ':' + "57615" + '/');
+  var ws = new WebSocket(protocol + '://' + hostname + ':' + "51693" + '/');
 
   ws.onmessage = function (event) {
     var data = JSON.parse(event.data);

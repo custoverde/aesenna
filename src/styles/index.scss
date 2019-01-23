@@ -1,0 +1,16 @@
+@import "mixin";
+@import ".var.scss";
+@import "app-bar.scss";
+@import "navigation-drawer.scss";
+@import "home.scss";
+
+body {
+  background-color: $color-c;
+  margin: 0;
+  padding: 0;
+  font-family: "Roboto", sans-serif;
+  color: $color-a;
+}
+
+
+
