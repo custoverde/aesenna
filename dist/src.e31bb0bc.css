@@ -111,9 +111,43 @@
         vertical-align: bottom;
         padding-bottom: 6px; }
 
+.turmas {
+  margin: 0 auto;
+  padding: 70px 20px;
+  max-width: 600px; }
+
 body {
   background-color: #f2f4f3;
   margin: 0;
   padding: 0;
   font-family: "Roboto", sans-serif;
   color: #0a0908; }
+
+.list {
+  margin: 40px 0; }
+  .list__item {
+    display: flex;
+    align-items: center;
+    margin-bottom: 20px;
+    background-color: #fff;
+    padding: 10px 12px;
+    border-radius: 2px;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.12), 0 1px 2px rgba(0, 0, 0, 0.24); }
+    .list__item__text {
+      flex: 1; }
+    .list__item__input {
+      flex: 1;
+      border-top: 0;
+      border-right: 0;
+      border-left: 0;
+      border-bottom: 1px solid #c7c7c7; }
+    .list__item__button {
+      background-color: transparent;
+      border: 0;
+      cursor: pointer; }
+      .list__item__button--hidden {
+        visibility: hidden; }
+      .list__item__button--red {
+        color: #e84427; }
+      .list__item__button--green {
+        color: #7ea172; }

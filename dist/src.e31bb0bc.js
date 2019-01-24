@@ -29258,7 +29258,9 @@ function (_React$Component) {
   _createClass(Turmas, [{
     key: "render",
     value: function render() {
-      return _react.default.createElement("h1", null, " Turmas ");
+      return _react.default.createElement("div", {
+        className: "turmas"
+      });
     }
   }]);
 
