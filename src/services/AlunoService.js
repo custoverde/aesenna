@@ -2,18 +2,23 @@ class AlunoService {
   static load() {
     return new Promise((resolve, reject) => {
       const stringAlunos = window.localStorage.getItem('alunos');
-      if (!stringAlunos) {
+      if (stringAlunos) {
+        resolve(JSON.parse(stringAlunos));
+      } else {
         fetch('http://jsonplaceholder.typicode.com/todos')
-          .then(todos => {
-            const alunos = [];
-            todos.map(todo => {
-              alunos.concat({ turmaId: todo.userId, id: todo.id, nome: todo.title });
+          .then(res => {
+            res.json().then(todos => {
+              let alunos = [];
+              todos.map(todo => {
+                const { userId, id, title} = todo;
+                alunos = alunos.concat({ turmaId: userId, id: id, nome: title });
+              });
+              setTimeout(() => {
+                resolve(alunos);
+              }, 2000);
             });
-            resolve(alunos);
           })
           .catch(err => reject(err));
-      } else {
-        resolve(JSON.parse(stringAlunos));
       }
     });
   }

@@ -4,6 +4,7 @@
 @import "navigation-drawer.scss";
 @import "home.scss";
 @import "turmas.scss";
+@import "alunos.scss";
 
 body {
   background-color: $color-c;
@@ -24,11 +25,11 @@ body {
     padding: 10px 12px;
     border-radius: 2px;
     @include box-shadow(1);
-  
+
     &__text {
       flex: 1;
     }
-  
+
     &__input {
       flex: 1;
       border-top: 0;
@@ -36,20 +37,20 @@ body {
       border-left: 0;
       border-bottom: 1px solid #c7c7c7;
     }
-  
+
     &__button {
       background-color: transparent;
       border: 0;
       cursor: pointer;
-  
+
       &--hidden {
         visibility: hidden;
       }
-  
+
       &--red {
         color: $color-danger;
       }
-  
+
       &--green {
         color: $color-success;
       }

@@ -2,18 +2,21 @@ class TurmaService {
   static load() {
     return new Promise((resolve, reject) => {
       const stringTurmas = window.localStorage.getItem('turmas');
-      if (!stringTurmas) {
+      if (stringTurmas) {
+        resolve(JSON.parse(stringTurmas));
+      } else {
         fetch('http://jsonplaceholder.typicode.com/users')
-          .then(users => {
-            const turmas = [];
-            users.map(user => {
-              turmas.concat({ id: user.id, nome: user.mame });
+          .then(res => {
+            res.json().then(users => {
+              let turmas = [];
+              users.map(user => {
+                const {id, name } = user;
+                turmas = turmas.concat({ id, nome:name});
+              });
+              resolve(turmas);
             });
-            resolve(turmas);
           })
           .catch(err => reject(err));
-      } else {
-        resolve(JSON.parse(stringTurmas));
       }
     });
   }

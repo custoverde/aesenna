@@ -1,8 +1,7 @@
 import React from "react";
 import classNames from "classnames";
-import { notEqual } from "assert";
 
-class ListItemTurma extends React.Component {
+class ListItemAluno extends React.Component {
   state = {
     isEditing: false
   };
@@ -17,11 +16,11 @@ class ListItemTurma extends React.Component {
 
   handleSave = () => {
     handleCancel();
-    this.props.onEdit(this.props.turma.id, this.input.value);
+    this.props.onEdit(this.props.aluno.id, this.input.value);
   };
 
   render() {
-    const { turma, onDelete, onEdit } = this.props;
+    const { aluno, onDelete, onEdit } = this.props;
     const { isEditing }  = this.state;
     return (
       <div className="list__item">
@@ -29,13 +28,13 @@ class ListItemTurma extends React.Component {
           <input
             type="text"
             className="list__item__input"
-            defaultValue={turma.nome}
+            defaultValue={aluno.nome}
             ref={c => {
               this.input = c;
             }}
           />
         ) : (
-          <span className="list__item__text">{turma.nome}</span>
+          <span className="list__item__text">{aluno.nome}</span>
         )}
         {isEditing && (
           <React.Fragment>
@@ -54,7 +53,7 @@ class ListItemTurma extends React.Component {
           disabled={isEditing}
           className="list__item__button"
           onClick={() => {
-            onDelete(turma.id);
+            onDelete(aluno.id);
           }}
         >
           <i className="material-icons">delete</i>
@@ -64,4 +63,4 @@ class ListItemTurma extends React.Component {
   }
 }
 
-export default ListItemTurma;
+export default ListItemAluno;

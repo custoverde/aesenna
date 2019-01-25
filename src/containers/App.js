@@ -11,9 +11,6 @@ import NavigationDrawer from '../components/NavigationDrawer';
 
 class App extends React.Component {
   state = {
-    alunos: [],
-    turmas: [],
-    isLoading: false,
     isMenuOpen: false
   };
 
@@ -26,15 +23,15 @@ class App extends React.Component {
   };
 
   render() {
-    const { isLoading, isMenuOpen } = this.state;
+    const { isMenuOpen } = this.state;
     return (
       <Router>
         <div>
-          <AppBar isLoading={isLoading} onOpenMenu={this.handleOpenMenu}/>
+          <AppBar onOpenMenu={this.handleOpenMenu}/>
           <Fragment>
             <Route path="/" exact component={Home} />
             <Route path="/alunos" component={Alunos} />
-            <Route path="/turmas" component={Turmas} />
+            <Route path="/turmas" exact component={Turmas} />
             <Route path="/turmas/alunos" component={AlunosTurma} />
           </Fragment>
           <NavigationDrawer isOpen={isMenuOpen} onCloseMenu={this.handleCloseMenu}/>
