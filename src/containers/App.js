@@ -32,7 +32,7 @@ class App extends React.Component {
             <Route path="/" exact component={Home} />
             <Route path="/alunos" component={Alunos} />
             <Route path="/turmas" exact component={Turmas} />
-            <Route path="/turmas/alunos" component={AlunosTurma} />
+            <Route path="/turmas/alunos/:id" component={AlunosTurma} />
           </Fragment>
           <NavigationDrawer isOpen={isMenuOpen} onCloseMenu={this.handleCloseMenu}/>
         </div>

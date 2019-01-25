@@ -14,6 +14,7 @@ class Alunos extends React.Component {
   };
 
   componentDidMount() {
+    this.setState({isLoading:true});
     this.handleReload();
   }
 
@@ -55,10 +56,8 @@ class Alunos extends React.Component {
   };
 
   handleReload = () => {
-    this.setState({ isLoading: true });
     AlunoService.load()
       .then(alunos => {
-        //toast.dismiss();
         this.setState({ alunos, isLoading: false });
       })
       .catch(() => {

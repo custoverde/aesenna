@@ -5,7 +5,7 @@ class TurmaService {
       if (stringTurmas) {
         resolve(JSON.parse(stringTurmas));
       } else {
-        fetch('http://jsonplaceholder.typicode.com/users')
+        fetch('https://cors-anywhere.herokuapp.com/http://jsonplaceholder.typicode.com/users')
           .then(res => {
             res.json().then(users => {
               let turmas = [];
@@ -13,12 +13,23 @@ class TurmaService {
                 const {id, name } = user;
                 turmas = turmas.concat({ id, nome:name});
               });
+              TurmaService.save(turmas);
               resolve(turmas);
             });
           })
           .catch(err => reject(err));
       }
     });
+  }
+
+  static byId(id) {
+     console.log(id);
+
+     TurmaService.load().then(turmas => {
+      console.log(turmas);
+      const index = turmas.findIndex(turma => turma.id === id);
+      return turmas[index];
+     });
   }
 
   static save(turmas) {

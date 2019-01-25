@@ -5,6 +5,8 @@
 @import "home.scss";
 @import "turmas.scss";
 @import "alunos.scss";
+@import "./turmas/view-turma.scss";
+@import "./turmas/alunos-turma.scss";
 
 body {
   background-color: $color-c;

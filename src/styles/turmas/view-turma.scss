@@ -1,0 +1,12 @@
+.view-turma {
+  padding-left: $app-padding;
+  padding-right: $app-padding;
+
+  h1 {
+    font-size: 30px;
+    border-top: 0px;
+    border-left: 0px;
+    border-right: 0px;
+    border-bottom: 2px solid $color-d;
+  }
+}

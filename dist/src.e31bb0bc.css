@@ -121,6 +121,21 @@
   padding: 70px 20px;
   max-width: 600px; }
 
+.view-turma {
+  padding-left: 20px;
+  padding-right: 20px; }
+  .view-turma h1 {
+    font-size: 30px;
+    border-top: 0px;
+    border-left: 0px;
+    border-right: 0px;
+    border-bottom: 2px solid #a9927d; }
+
+.alunos-turma {
+  margin: 0 auto;
+  padding: 70px 20px;
+  max-width: 600px; }
+
 body {
   background-color: #f2f4f3;
   margin: 0;

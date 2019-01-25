@@ -9,7 +9,7 @@ import TurmaService from '../services/TurmaService';
 
 class Turmas extends React.Component {
   state = {
-    isLoading: false,
+    isLoading: true,
     reloadHasError: false,
     turmas: []
   };
@@ -56,7 +56,6 @@ class Turmas extends React.Component {
   };
 
   handleReload = () => {
-    this.setState({ isLoading: true });
     TurmaService.load()
       .then(turmas => {
         this.setState({ turmas, isLoading: false });
