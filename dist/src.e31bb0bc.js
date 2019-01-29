@@ -31712,12 +31712,12 @@ function () {
     key: "load",
     value: function load() {
       return new Promise(function (resolve, reject) {
-        var stringAlunos = window.localStorage.getItem("alunos");
+        var stringAlunos = window.localStorage.getItem('alunos');
 
         if (stringAlunos) {
           resolve(JSON.parse(stringAlunos));
         } else {
-          fetch("https://cors-anywhere.herokuapp.com/http://jsonplaceholder.typicode.com/todos").then(function (res) {
+          fetch('https://cors-anywhere.herokuapp.com/http://jsonplaceholder.typicode.com/todos').then(function (res) {
             res.json().then(function (todos) {
               var alunos = [];
               todos.map(function (todo) {
@@ -31748,10 +31748,31 @@ function () {
         try {
           AlunoService.load().then(function (alunos) {
             var alunosTurma = alunos.filter(function (aluno) {
-              aluno.turmaId === id;
+              var turmaId = aluno.turmaId;
+              return Number(turmaId) === Number(id) || Number(turmaId) === Number(-1);
             });
-            console.log('alunos: ', alunosTurma);
             resolve(alunosTurma);
+          });
+        } catch (err) {
+          reject(err);
+        }
+      });
+    }
+  }, {
+    key: "dealocateOfTurmaId",
+    value: function dealocateOfTurmaId(p_id) {
+      return new Promise(function (resolve, reject) {
+        try {
+          AlunoService.load().then(function (alunos) {
+            alunos.map(function (aluno) {
+              var turmaId = aluno.turmaId;
+
+              if (Number(turmaId) === Number(p_id)) {
+                aluno.turmaId = -1;
+              }
+            });
+            AlunoService.save(alunos);
+            resolve(true);
           });
         } catch (err) {
           reject(err);
@@ -31763,8 +31784,55 @@ function () {
     value: function save(alunos) {
       return new Promise(function (resolve, reject) {
         try {
-          window.localStorage.setItem("alunos", JSON.stringify(alunos));
+          window.localStorage.setItem('alunos', JSON.stringify(alunos));
           resolve(true);
+        } catch (err) {
+          reject(err);
+        }
+      });
+    }
+  }, {
+    key: "saveById",
+    value: function saveById(p_id, p_turmaId) {
+      return new Promise(function (resolve, reject) {
+        try {
+          AlunoService.load().then(function (alunos) {
+            alunos.map(function (aluno) {
+              var id = aluno.id;
+
+              if (Number(id) === Number(p_id)) {
+                aluno.turmaId = p_turmaId;
+              }
+            });
+            AlunoService.save(alunos);
+            resolve(true);
+          });
+        } catch (err) {
+          reject(err);
+        }
+      });
+    }
+  }, {
+    key: "AlunosPorTurma",
+    value: function AlunosPorTurma() {
+      return new Promise(function (resolve, reject) {
+        try {
+          AlunoService.load().then(function (alunos) {
+            var dic = new Map();
+            alunos.map(function (aluno) {
+              var cont = 0;
+
+              if (aluno.turmaId >= 0) {
+                if (dic.has(Number(aluno.turmaId))) {
+                  cont = dic.get(Number(aluno.turmaId));
+                }
+
+                cont++;
+                dic.set(Number(aluno.turmaId), cont);
+              }
+            });
+            resolve(dic);
+          });
         } catch (err) {
           reject(err);
         }
@@ -31838,7 +31906,7 @@ function (_React$Component) {
         isEditing: false
       });
     }, _this.handleSave = function () {
-      handleCancel();
+      _this.handleCancel();
 
       _this.props.onEdit(_this.props.aluno.id, _this.input.value);
     }, _temp));
@@ -31851,8 +31919,7 @@ function (_React$Component) {
 
       var _this$props = this.props,
           aluno = _this$props.aluno,
-          onDelete = _this$props.onDelete,
-          onEdit = _this$props.onEdit;
+          onDelete = _this$props.onDelete;
       var isEditing = this.state.isEditing;
       return _react.default.createElement("div", {
         className: "list__item"
@@ -32030,33 +32097,37 @@ function (_React$Component) {
       alunos: []
     }, _this.handleDelete = function (id) {
       _this.setState(function (prevState) {
-        var newNotes = prevState.notes.slice();
-        var index = newNotes.findIndex(function (note) {
-          return note.id === id;
+        var newAlunos = prevState.alunos.slice();
+        var index = newAlunos.findIndex(function (aluno) {
+          return aluno.id === id;
         });
-        newNotes.splice(index, 1);
+        newAlunos.splice(index, 1);
 
-        _this.handleSave(newNotes);
+        _this.handleSave(newAlunos);
 
         return {
-          notes: newNotes
+          alunos: newAlunos
         };
       });
     }, _this.handleEdit = function (id, text) {
       _this.setState(function (prevState) {
-        var newNotes = prevState.notes.slice();
-        var index = newNotes.findIndex(function (note) {
-          return note.id === id;
+        var newAlunos = prevState.alunos.slice();
+        var index = newAlunos.findIndex(function (aluno) {
+          return aluno.id === id;
         });
-        newNotes[index].text = text;
+        newAlunos[index].nome = text;
 
-        _this.handleSave(newNotes);
+        _this.handleSave(newAlunos);
 
         return {
-          notes: newNotes
+          alunos: newAlunos
         };
       });
     }, _this.handleReload = function () {
+      _this.setState({
+        isLoading: true
+      });
+
       _AlunoService.default.load().then(function (alunos) {
         _this.setState({
           alunos: alunos,
@@ -32068,15 +32139,23 @@ function (_React$Component) {
           reloadHasError: true
         });
       });
+    }, _this.handleSave = function (alunos) {
+      _AlunoService.default.save(alunos).then(function () {
+        _this.setState({
+          isLoading: false
+        });
+      }).catch(function () {
+        _this.setState({
+          isLoading: false,
+          saveHasError: true
+        });
+      });
     }, _temp));
   }
 
   _createClass(Alunos, [{
     key: "componentDidMount",
     value: function componentDidMount() {
-      this.setState({
-        isLoading: true
-      });
       this.handleReload();
     }
   }, {
@@ -32172,7 +32251,9 @@ function (_React$Component) {
         isEditing: false
       });
     }, _this.handleSave = function () {
-      handleCancel();
+      _this.handleCancel();
+
+      console.log('id', _this.props.turma.id, 'value', _this.input.value);
 
       _this.props.onEdit(_this.props.turma.id, _this.input.value);
     }, _temp));
@@ -32186,7 +32267,7 @@ function (_React$Component) {
       var _this$props = this.props,
           turma = _this$props.turma,
           onDelete = _this$props.onDelete,
-          onEdit = _this$props.onEdit,
+          alunosTotal = _this$props.alunosTotal,
           history = _this$props.history;
       var isEditing = this.state.isEditing;
       return _react.default.createElement("div", {
@@ -32230,7 +32311,7 @@ function (_React$Component) {
         onClick: function onClick() {
           onDelete(turma.id);
         }
-      }, _react.default.createElement("i", {
+      }, _react.default.createElement("span", null, alunosTotal), _react.default.createElement("i", {
         className: "material-icons"
       }, "delete")));
     }
@@ -32290,17 +32371,27 @@ function (_React$Component) {
     value: function render() {
       var _this$props = this.props,
           turmas = _this$props.turmas,
+          dic = _this$props.dic,
           onDelete = _this$props.onDelete,
           onEdit = _this$props.onEdit;
       return _react.default.createElement("div", {
         className: "list"
       }, turmas.map(function (turma, index) {
+        var alunosTotal = 0;
+        console.log('dic', dic, 'turmaid', turma.id);
+
+        if (dic.has(turma.id)) {
+          console.log('chegou');
+          alunosTotal = dic.get(turma.id);
+        }
+
         return _react.default.createElement(_ListItemTurma.default, {
           key: turma.id,
           turma: turma,
           onEdit: onEdit,
           onDelete: onDelete,
           index: index,
+          alunosTotal: alunosTotal,
           total: turmas.length
         });
       }));
@@ -32364,14 +32455,19 @@ function () {
     }
   }, {
     key: "byId",
-    value: function byId(id) {
-      console.log(id);
-      TurmaService.load().then(function (turmas) {
-        console.log(turmas);
-        var index = turmas.findIndex(function (turma) {
-          return turma.id === id;
-        });
-        return turmas[index];
+    value: function byId(p_id) {
+      return new Promise(function (resolve, reject) {
+        try {
+          TurmaService.load().then(function (turmas) {
+            var turma = turmas.find(function (turma) {
+              var id = turma.id;
+              return Number(id) === Number(p_id);
+            });
+            resolve(turma);
+          });
+        } catch (err) {
+          reject(err);
+        }
       });
     }
   }, {
@@ -32410,6 +32506,8 @@ require("react-toastify/dist/ReactToastify.css");
 var _ListTurmas = _interopRequireDefault(require("../components/ListTurmas"));
 
 var _TurmaService = _interopRequireDefault(require("../services/TurmaService"));
+
+var _AlunoService = _interopRequireDefault(require("../services/AlunoService"));
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -32452,40 +32550,60 @@ function (_React$Component) {
     return _possibleConstructorReturn(_this, (_temp = _this = _possibleConstructorReturn(this, (_getPrototypeOf2 = _getPrototypeOf(Turmas)).call.apply(_getPrototypeOf2, [this].concat(args))), _this.state = {
       isLoading: true,
       reloadHasError: false,
-      turmas: []
+      saveHasError: false,
+      turmas: [],
+      dic: {}
     }, _this.handleDelete = function (id) {
-      _this.setState(function (prevState) {
-        var newNotes = prevState.notes.slice();
-        var index = newNotes.findIndex(function (note) {
-          return note.id === id;
-        });
-        newNotes.splice(index, 1);
+      _AlunoService.default.dealocateOfTurmaId(id).then(function (ok) {
+        if (ok) {
+          _this.setState(function (prevState) {
+            var newTurmas = prevState.turmas.slice();
+            var index = newTurmas.findIndex(function (turma) {
+              return turma.id === id;
+            });
+            newTurmas.splice(index, 1);
 
-        _this.handleSave(newNotes);
+            _this.handleSave(newTurmas);
 
-        return {
-          notes: newNotes
-        };
+            return {
+              turmas: newTurmas
+            };
+          });
+        }
       });
     }, _this.handleEdit = function (id, text) {
       _this.setState(function (prevState) {
-        var newNotes = prevState.notes.slice();
-        var index = newNotes.findIndex(function (note) {
-          return note.id === id;
+        var newTurmas = prevState.turmas.slice();
+        var index = newTurmas.findIndex(function (turma) {
+          return turma.id === id;
         });
-        newNotes[index].text = text;
+        newTurmas[index].nome = text;
 
-        _this.handleSave(newNotes);
+        _this.handleSave(newTurmas);
 
         return {
-          notes: newNotes
+          turmas: newTurmas
         };
+      });
+    }, _this.handleSave = function (turmas) {
+      _TurmaService.default.save(turmas).then(function () {
+        _this.setState({
+          isLoading: false
+        });
+      }).catch(function () {
+        _this.setState({
+          isLoading: false,
+          saveHasError: true
+        });
       });
     }, _this.handleReload = function () {
       _TurmaService.default.load().then(function (turmas) {
-        _this.setState({
-          turmas: turmas,
-          isLoading: false
+        _AlunoService.default.AlunosPorTurma().then(function (dic) {
+          _this.setState({
+            turmas: turmas,
+            dic: dic,
+            isLoading: false
+          });
         });
       }).catch(function () {
         _this.setState({
@@ -32515,11 +32633,14 @@ function (_React$Component) {
   }, {
     key: "render",
     value: function render() {
-      var turmas = this.state.turmas;
+      var _this$state = this.state,
+          turmas = _this$state.turmas,
+          dic = _this$state.dic;
       return _react.default.createElement("div", {
         className: "turmas"
       }, _react.default.createElement(_ListTurmas.default, {
         turmas: turmas,
+        dic: dic,
         onDelete: this.handleDelete,
         onEdit: this.handleEdit
       }), _react.default.createElement(_reactToastify.ToastContainer, null));
@@ -32531,7 +32652,7 @@ function (_React$Component) {
 
 var _default = Turmas;
 exports.default = _default;
-},{"react":"../node_modules/react/index.js","react-toastify":"../node_modules/react-toastify/lib/index.js","react-toastify/dist/ReactToastify.css":"../node_modules/react-toastify/dist/ReactToastify.css","../components/ListTurmas":"components/ListTurmas.js","../services/TurmaService":"services/TurmaService.js"}],"components/turmas/ViewTurma.js":[function(require,module,exports) {
+},{"react":"../node_modules/react/index.js","react-toastify":"../node_modules/react-toastify/lib/index.js","react-toastify/dist/ReactToastify.css":"../node_modules/react-toastify/dist/ReactToastify.css","../components/ListTurmas":"components/ListTurmas.js","../services/TurmaService":"services/TurmaService.js","../services/AlunoService":"services/AlunoService.js"}],"components/turmas/ViewTurma.js":[function(require,module,exports) {
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -32578,7 +32699,7 @@ function (_React$Component) {
       var turma = this.props.turma;
       return _react.default.createElement("div", {
         className: ".view-turma"
-      }, _react.default.createElement("h1", null, " ", turma.nome, " "));
+      }, _react.default.createElement("h2", null, " Turma: "), _react.default.createElement("h1", null, " ", turma.nome, " "));
     }
   }]);
 
@@ -32625,79 +32746,38 @@ function (_React$Component) {
   _inherits(ListItemAlunosTurma, _React$Component);
 
   function ListItemAlunosTurma() {
-    var _getPrototypeOf2;
-
-    var _this;
-
-    var _temp;
-
     _classCallCheck(this, ListItemAlunosTurma);
 
-    for (var _len = arguments.length, args = new Array(_len), _key = 0; _key < _len; _key++) {
-      args[_key] = arguments[_key];
-    }
-
-    return _possibleConstructorReturn(_this, (_temp = _this = _possibleConstructorReturn(this, (_getPrototypeOf2 = _getPrototypeOf(ListItemAlunosTurma)).call.apply(_getPrototypeOf2, [this].concat(args))), _this.state = {
-      isEditing: false
-    }, _this.handleEdit = function () {
-      _this.setState({
-        isEditing: true
-      });
-    }, _this.handleCancel = function () {
-      _this.setState({
-        isEditing: false
-      });
-    }, _this.handleSave = function () {
-      handleCancel(); //this.props.onEdit(this.props.aluno.id, this.input.value);
-    }, _temp));
+    return _possibleConstructorReturn(this, _getPrototypeOf(ListItemAlunosTurma).apply(this, arguments));
   }
 
   _createClass(ListItemAlunosTurma, [{
     key: "render",
     value: function render() {
-      var _this2 = this;
-
       var _this$props = this.props,
           aluno = _this$props.aluno,
-          onDelete = _this$props.onDelete,
-          onEdit = _this$props.onEdit;
-      var isEditing = this.state.isEditing;
+          onPorNaTurma = _this$props.onPorNaTurma,
+          onTirarDaTurma = _this$props.onTirarDaTurma;
+      var isPendenteTurma = aluno.turmaId <= 0;
       return _react.default.createElement("div", {
         className: "list__item"
-      }, isEditing ? _react.default.createElement("input", {
-        type: "text",
-        className: "list__item__input",
-        defaultValue: aluno.nome,
-        ref: function ref(c) {
-          _this2.input = c;
-        }
-      }) : _react.default.createElement("span", {
+      }, _react.default.createElement("span", {
         className: "list__item__text"
-      }, aluno.nome), isEditing && _react.default.createElement(_react.default.Fragment, null, _react.default.createElement("button", {
+      }, aluno.nome), isPendenteTurma ? _react.default.createElement("button", {
         className: "list__item__button list__item__button--red",
-        onClick: this.handleCancel
-      }, _react.default.createElement("i", {
-        className: "material-icons"
-      }, "cancel")), _react.default.createElement("button", {
-        className: "list__item__button list__item__button--green",
-        onClick: this.handleSave
-      }, _react.default.createElement("i", {
-        className: "material-icons"
-      }, "done_outline"))), _react.default.createElement("button", {
-        disabled: isEditing,
-        className: "list__item__button",
-        onClick: this.handleEdit
-      }, _react.default.createElement("i", {
-        className: "material-icons"
-      }, "edit")), _react.default.createElement("button", {
-        disabled: isEditing,
-        className: "list__item__button",
         onClick: function onClick() {
-          onDelete(aluno.id);
+          onPorNaTurma(aluno.id);
         }
       }, _react.default.createElement("i", {
         className: "material-icons"
-      }, "delete")));
+      }, "cancel")) : _react.default.createElement("button", {
+        className: "list__item__button list__item__button--green",
+        onClick: function onClick() {
+          onTirarDaTurma(aluno.id);
+        }
+      }, _react.default.createElement("i", {
+        className: "material-icons"
+      }, "done_outline")));
     }
   }]);
 
@@ -32754,16 +32834,16 @@ function (_React$Component) {
     value: function render() {
       var _this$props = this.props,
           alunos = _this$props.alunos,
-          onDelete = _this$props.onDelete,
-          onEdit = _this$props.onEdit;
+          onPorNaTurma = _this$props.onPorNaTurma,
+          onTirarDaTurma = _this$props.onTirarDaTurma;
       return _react.default.createElement("div", {
         className: "list"
       }, alunos.map(function (aluno, index) {
         return _react.default.createElement(_ListItemAlunosTurma.default, {
           key: aluno.id,
           aluno: aluno,
-          onEdit: onEdit,
-          onDelete: onDelete,
+          onPorNaTurma: onPorNaTurma,
+          onTirarDaTurma: onTirarDaTurma,
           index: index,
           total: alunos.length
         });
@@ -32843,7 +32923,9 @@ function (_React$Component) {
       turma: {},
       alunosTurma: []
     }, _this.handleReloadTurma = function () {
-      _TurmaService.default.byId(_this.props.match.id).then(function (turma) {
+      var id = _this.props.match.params.id;
+
+      _TurmaService.default.byId(id).then(function (turma) {
         _this.setState({
           turma: turma,
           isLoading: false
@@ -32855,9 +32937,7 @@ function (_React$Component) {
         });
       });
     }, _this.handleReloadAlunos = function () {
-      console.log('tentativa ', _this.props.match.id);
-
-      _AlunoService.default.byTurmaId(_this.props.match.id).then(function (alunosTurma) {
+      _AlunoService.default.byTurmaId(_this.props.match.params.id).then(function (alunosTurma) {
         _this.setState({
           alunosTurma: alunosTurma,
           isAlunosLoading: false
@@ -32868,14 +32948,38 @@ function (_React$Component) {
           reloadHasError: true
         });
       });
-    }, _this.handleDelete = function () {}, _this.handleEdit = function () {}, _temp));
+    }, _this.handlePorNaTurma = function (p_id) {
+      var turmaId = _this.props.match.params.id;
+
+      _AlunoService.default.saveById(p_id, turmaId).then(function (ok) {
+        if (ok) {
+          _this.handleReloadAlunos();
+        }
+      }).catch(function () {
+        _this.setState({
+          isAlunosLoading: false,
+          reloadHasError: true
+        });
+      });
+    }, _this.handleTirarDaTurma = function (p_id) {
+      _AlunoService.default.saveById(p_id, -1).then(function (ok) {
+        if (ok) {
+          _this.handleReloadAlunos();
+        }
+      }).catch(function () {
+        _this.setState({
+          isAlunosLoading: false,
+          reloadHasError: true
+        });
+      });
+    }, _temp));
   }
 
   _createClass(AlunosTurma, [{
     key: "componentDidMount",
     value: function componentDidMount() {
-      this.handleReloadTurma();
       this.handleReloadAlunos();
+      this.handleReloadTurma();
     }
   }, {
     key: "componentDidUpdate",
@@ -32898,6 +33002,10 @@ function (_React$Component) {
         className: "alunos-turma"
       }, _react.default.createElement(_ViewTurma.default, {
         turma: turma
+      }), _react.default.createElement(_ListAlunosTurma.default, {
+        alunos: alunosTurma,
+        onPorNaTurma: this.handlePorNaTurma,
+        onTirarDaTurma: this.handleTirarDaTurma
       }), _react.default.createElement(_reactToastify.ToastContainer, null));
     }
   }]);
@@ -33235,7 +33343,7 @@ var parent = module.bundle.parent;
 if ((!parent || !parent.isParcelRequire) && typeof WebSocket !== 'undefined') {
   var hostname = "" || location.hostname;
   var protocol = location.protocol === 'https:' ? 'wss' : 'ws';
-  var ws = new WebSocket(protocol + '://' + hostname + ':' + "55702" + '/');
+  var ws = new WebSocket(protocol + '://' + hostname + ':' + "63518" + '/');
 
   ws.onmessage = function (event) {
     var data = JSON.parse(event.data);

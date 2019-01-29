@@ -16,12 +16,14 @@ class ListItemTurma extends React.Component {
   };
 
   handleSave = () => {
-    handleCancel();
+    this.handleCancel();
+    console.log('id', this.props.turma.id,'value',this.input.value);
     this.props.onEdit(this.props.turma.id, this.input.value);
   };
 
+
   render() {
-    const { turma, onDelete, onEdit, history } = this.props;
+    const { turma, onDelete, alunosTotal, history } = this.props;
     const { isEditing } = this.state;
     return (
       <div className="list__item">
@@ -76,6 +78,7 @@ class ListItemTurma extends React.Component {
             onDelete(turma.id);
           }}
         >
+          <span>{alunosTotal}</span>
           <i className="material-icons">delete</i>
         </button>
       </div>

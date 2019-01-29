@@ -18,9 +18,9 @@ class AlunosTurma extends React.Component {
     alunosTurma: []
   };
 
-  componentDidMount(){
-    this.handleReloadTurma();
+  componentDidMount() {
     this.handleReloadAlunos();
+    this.handleReloadTurma();
   }
 
   componentDidUpdate() {
@@ -33,7 +33,8 @@ class AlunosTurma extends React.Component {
   }
 
   handleReloadTurma = () => {
-    TurmaService.byId(this.props.match.id)
+    const id = this.props.match.params.id;
+    TurmaService.byId(id)
       .then(turma => {
         this.setState({ turma, isLoading: false });
       })
@@ -42,36 +43,55 @@ class AlunosTurma extends React.Component {
       });
   };
 
-  handleReloadAlunos = () =>{
-    console.log('tentativa ', this.props.match.id);
-    
-    AlunoService.byTurmaId(this.props.match.id)
-    .then(alunosTurma => {
-      this.setState({ alunosTurma, isAlunosLoading: false });
-    })
-    .catch(() => {
-      this.setState({ isAlunosLoading: false, reloadHasError: true });
-    });
-  }
-
-  handleDelete = () => {
-
+  handleReloadAlunos = () => {
+    AlunoService.byTurmaId(this.props.match.params.id)
+      .then(alunosTurma => {
+        this.setState({ alunosTurma, isAlunosLoading: false });
+      })
+      .catch(() => {
+        this.setState({ isAlunosLoading: false, reloadHasError: true });
+      });
   };
 
-  handleEdit = () => {
+  handlePorNaTurma = p_id => {
+    const turmaId = this.props.match.params.id;
+    AlunoService.saveById(p_id, turmaId)
+      .then(ok => {
+        if (ok) {
+          this.handleReloadAlunos();
+        }
+      })
+      .catch(() => {
+        this.setState({ isAlunosLoading: false, reloadHasError: true });
+      });
+  };
 
+  handleTirarDaTurma = p_id => {
+    AlunoService.saveById(p_id, -1)
+      .then(ok => {
+        if (ok) {
+          this.handleReloadAlunos();
+        }
+      })
+      .catch(() => {
+        this.setState({ isAlunosLoading: false, reloadHasError: true });
+      });
   };
 
   render() {
-    const {turma, alunosTurma} = this.state;
+    const { turma, alunosTurma } = this.state;
 
     return (
       <div className="alunos-turma">
         <ViewTurma turma={turma} />
-        
+
+        <ListAlunosTurma
+          alunos={alunosTurma}
+          onPorNaTurma={this.handlePorNaTurma}
+          onTirarDaTurma={this.handleTirarDaTurma}
+        />
         <ToastContainer />
       </div>
-
     );
   }
 }

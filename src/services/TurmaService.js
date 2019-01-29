@@ -10,8 +10,8 @@ class TurmaService {
             res.json().then(users => {
               let turmas = [];
               users.map(user => {
-                const {id, name } = user;
-                turmas = turmas.concat({ id, nome:name});
+                const { id, name } = user;
+                turmas = turmas.concat({ id, nome: name });
               });
               TurmaService.save(turmas);
               resolve(turmas);
@@ -22,14 +22,20 @@ class TurmaService {
     });
   }
 
-  static byId(id) {
-     console.log(id);
-
-     TurmaService.load().then(turmas => {
-      console.log(turmas);
-      const index = turmas.findIndex(turma => turma.id === id);
-      return turmas[index];
-     });
+  static byId(p_id) {
+    return new Promise((resolve, reject) => {
+      try {
+        TurmaService.load().then(turmas => {
+          const turma = turmas.find(turma => {
+            const { id } = turma;
+            return Number(id) === Number(p_id);
+          });
+          resolve(turma);
+        });
+      } catch (err) {
+        reject(err);
+      }
+    });
   }
 
   static save(turmas) {

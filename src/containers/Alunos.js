@@ -14,7 +14,6 @@ class Alunos extends React.Component {
   };
 
   componentDidMount() {
-    this.setState({isLoading:true});
     this.handleReload();
   }
 
@@ -29,33 +28,35 @@ class Alunos extends React.Component {
 
   handleDelete = id => {
     this.setState(prevState => {
-      const newNotes = prevState.notes.slice();
-      const index = newNotes.findIndex(note => note.id === id);
-      newNotes.splice(index, 1);
+      const newAlunos = prevState.alunos.slice();
+      const index = newAlunos.findIndex(aluno => aluno.id === id);
+      newAlunos.splice(index, 1);
 
-      this.handleSave(newNotes);
+      this.handleSave(newAlunos);
 
       return {
-        notes: newNotes
+        alunos: newAlunos
       };
     });
   };
 
   handleEdit = (id, text) => {
-    this.setState(prevState => {
-      const newNotes = prevState.notes.slice();
-      const index = newNotes.findIndex(note => note.id === id);
-      newNotes[index].text = text;
 
-      this.handleSave(newNotes);
+    this.setState(prevState => {
+      const newAlunos = prevState.alunos.slice();
+      const index = newAlunos.findIndex(aluno => aluno.id === id);
+      newAlunos[index].nome = text;
+
+      this.handleSave(newAlunos);
 
       return {
-        notes: newNotes
+        alunos: newAlunos
       };
     });
   };
 
   handleReload = () => {
+    this.setState({isLoading:true});
     AlunoService.load()
       .then(alunos => {
         this.setState({ alunos, isLoading: false });
@@ -64,6 +65,14 @@ class Alunos extends React.Component {
         this.setState({ isLoading: false, reloadHasError: true });
       });
   };
+
+  handleSave = alunos => {
+    AlunoService.save(alunos).then(() =>{
+      this.setState({isLoading:false});
+    }).catch(() => {
+      this.setState({ isLoading: false, saveHasError: true });
+    });
+  }
 
   render() {
     const { alunos } = this.state;

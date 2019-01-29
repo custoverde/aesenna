@@ -6,6 +6,7 @@ class ViewTurma extends React.Component {
 
     return (
       <div className=".view-turma">
+        <h2> Turma: </h2>
         <h1> { turma.nome} </h1>
       </div>
     );

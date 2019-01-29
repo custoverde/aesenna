@@ -1,5 +1,5 @@
-import React from "react";
-import classNames from "classnames";
+import React from 'react';
+import classNames from 'classnames';
 
 class ListItemAluno extends React.Component {
   state = {
@@ -15,13 +15,13 @@ class ListItemAluno extends React.Component {
   };
 
   handleSave = () => {
-    handleCancel();
+    this.handleCancel();
     this.props.onEdit(this.props.aluno.id, this.input.value);
   };
 
   render() {
-    const { aluno, onDelete, onEdit } = this.props;
-    const { isEditing }  = this.state;
+    const { aluno, onDelete } = this.props;
+    const { isEditing } = this.state;
     return (
       <div className="list__item">
         {isEditing ? (
@@ -38,10 +38,16 @@ class ListItemAluno extends React.Component {
         )}
         {isEditing && (
           <React.Fragment>
-            <button className="list__item__button list__item__button--red" onClick={this.handleCancel}>
+            <button
+              className="list__item__button list__item__button--red"
+              onClick={this.handleCancel}
+            >
               <i className="material-icons">cancel</i>
             </button>
-            <button className="list__item__button list__item__button--green" onClick={this.handleSave}>
+            <button
+              className="list__item__button list__item__button--green"
+              onClick={this.handleSave}
+            >
               <i className="material-icons">done_outline</i>
             </button>
           </React.Fragment>

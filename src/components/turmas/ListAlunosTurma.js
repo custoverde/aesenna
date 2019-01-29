@@ -4,7 +4,7 @@ import ListItemAlunosTurma from './ListItemAlunosTurma';
 
 class ListAlunosTurma extends React.Component {
   render() {
-    const { alunos, onDelete, onEdit } = this.props;
+    const { alunos, onPorNaTurma, onTirarDaTurma } = this.props;
 
     return (
       <div className="list">
@@ -12,8 +12,8 @@ class ListAlunosTurma extends React.Component {
           <ListItemAlunosTurma
             key={aluno.id}
             aluno={aluno}
-            onEdit={onEdit}
-            onDelete={onDelete}
+            onPorNaTurma={onPorNaTurma}
+            onTirarDaTurma={onTirarDaTurma}
             index={index}
             total={alunos.length}
           />

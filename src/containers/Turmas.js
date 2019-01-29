@@ -1,17 +1,19 @@
 import React from 'react';
 
-
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 
 import ListTurmas from '../components/ListTurmas';
 import TurmaService from '../services/TurmaService';
+import AlunoService from '../services/AlunoService';
 
 class Turmas extends React.Component {
   state = {
     isLoading: true,
     reloadHasError: false,
-    turmas: []
+    saveHasError: false,
+    turmas: [],
+    dic: {}
   };
 
   componentDidMount() {
@@ -28,37 +30,52 @@ class Turmas extends React.Component {
   }
 
   handleDelete = id => {
-    this.setState(prevState => {
-      const newNotes = prevState.notes.slice();
-      const index = newNotes.findIndex(note => note.id === id);
-      newNotes.splice(index, 1);
+    AlunoService.dealocateOfTurmaId(id).then(ok => {
+      if (ok) {
+        this.setState(prevState => {
+          const newTurmas = prevState.turmas.slice();
+          const index = newTurmas.findIndex(turma => turma.id === id);
+          newTurmas.splice(index, 1);
 
-      this.handleSave(newNotes);
+          this.handleSave(newTurmas);
 
-      return {
-        notes: newNotes
-      };
+          return {
+            turmas: newTurmas
+          };
+        });
+      }
     });
   };
 
   handleEdit = (id, text) => {
     this.setState(prevState => {
-      const newNotes = prevState.notes.slice();
-      const index = newNotes.findIndex(note => note.id === id);
-      newNotes[index].text = text;
-
-      this.handleSave(newNotes);
+      const newTurmas = prevState.turmas.slice();
+      const index = newTurmas.findIndex(turma => turma.id === id);
+      newTurmas[index].nome = text;
+      this.handleSave(newTurmas);
 
       return {
-        notes: newNotes
+        turmas: newTurmas
       };
     });
+  };
+
+  handleSave = turmas => {
+    TurmaService.save(turmas)
+      .then(() => {
+        this.setState({ isLoading: false });
+      })
+      .catch(() => {
+        this.setState({ isLoading: false, saveHasError: true });
+      });
   };
 
   handleReload = () => {
     TurmaService.load()
       .then(turmas => {
-        this.setState({ turmas, isLoading: false });
+        AlunoService.AlunosPorTurma().then(dic => {
+          this.setState({ turmas, dic, isLoading: false });
+        });
       })
       .catch(() => {
         this.setState({ isLoading: false, reloadHasError: true });
@@ -66,13 +83,14 @@ class Turmas extends React.Component {
   };
 
   render() {
-    const {turmas} = this.state;
+    const { turmas, dic } = this.state;
+
     return (
-        <div className="turmas">
-            <ListTurmas turmas={turmas} onDelete={this.handleDelete} onEdit={this.handleEdit} />
-            <ToastContainer />
-        </div>
-      )
+      <div className="turmas">
+        <ListTurmas turmas={turmas} dic={dic} onDelete={this.handleDelete} onEdit={this.handleEdit} />
+        <ToastContainer />
+      </div>
+    );
   }
 }
 
