@@ -31743,13 +31743,13 @@ function () {
     }
   }, {
     key: "byTurmaId",
-    value: function byTurmaId(id) {
+    value: function byTurmaId(p_id) {
       return new Promise(function (resolve, reject) {
         try {
           AlunoService.load().then(function (alunos) {
             var alunosTurma = alunos.filter(function (aluno) {
               var turmaId = aluno.turmaId;
-              return Number(turmaId) === Number(id) || Number(turmaId) === Number(-1);
+              return Number(turmaId) === Number(p_id) || Number(turmaId) === Number(-1);
             });
             resolve(alunosTurma);
           });
@@ -32378,10 +32378,8 @@ function (_React$Component) {
         className: "list"
       }, turmas.map(function (turma, index) {
         var alunosTotal = 0;
-        console.log('dic', dic, 'turmaid', turma.id);
 
         if (dic.has(turma.id)) {
-          console.log('chegou');
           alunosTotal = dic.get(turma.id);
         }
 
@@ -33343,7 +33341,7 @@ var parent = module.bundle.parent;
 if ((!parent || !parent.isParcelRequire) && typeof WebSocket !== 'undefined') {
   var hostname = "" || location.hostname;
   var protocol = location.protocol === 'https:' ? 'wss' : 'ws';
-  var ws = new WebSocket(protocol + '://' + hostname + ':' + "63518" + '/');
+  var ws = new WebSocket(protocol + '://' + hostname + ':' + "60835" + '/');
 
   ws.onmessage = function (event) {
     var data = JSON.parse(event.data);

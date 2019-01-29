@@ -11,9 +11,7 @@ class ListTurmas extends React.Component {
         {turmas.map((turma, index) => {
           let alunosTotal = 0;
 
-          console.log('dic', dic, 'turmaid', turma.id);
           if (dic.has(turma.id)) {
-            console.log('chegou');
             alunosTotal = dic.get(turma.id);
           }
 

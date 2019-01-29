@@ -28,13 +28,13 @@ class AlunoService {
     });
   }
 
-  static byTurmaId(id) {
+  static byTurmaId(p_id) {
     return new Promise((resolve, reject) => {
       try {
         AlunoService.load().then(alunos => {
           let alunosTurma = alunos.filter(aluno => {
             let { turmaId } = aluno;
-            return Number(turmaId) === Number(id) || Number(turmaId) === Number(-1);
+            return Number(turmaId) === Number(p_id) || Number(turmaId) === Number(-1);
           });
 
           resolve(alunosTurma);
