@@ -6,6 +6,7 @@ import 'react-toastify/dist/ReactToastify.css';
 import ListTurmas from '../components/ListTurmas';
 import TurmaService from '../services/TurmaService';
 import AlunoService from '../services/AlunoService';
+import NewTurma from '../components/NewTurma';
 
 class Turmas extends React.Component {
   state = {
@@ -30,7 +31,7 @@ class Turmas extends React.Component {
   }
 
   handleDelete = id => {
-    AlunoService.dealocateOfTurmaId(id).then(ok => {
+    TurmaService.dealocateOfTurmaId(id).then(ok => {
       if (ok) {
         this.setState(prevState => {
           const newTurmas = prevState.turmas.slice();
@@ -73,7 +74,9 @@ class Turmas extends React.Component {
   handleReload = () => {
     TurmaService.load()
       .then(turmas => {
+        console.log('chegouy');
         AlunoService.AlunosPorTurma().then(dic => {
+
           this.setState({ turmas, dic, isLoading: false });
         });
       })
@@ -82,12 +85,30 @@ class Turmas extends React.Component {
       });
   };
 
+  handleAddTurma = text => {
+    this.setState(prevState => {
+      const maxTurma = prevState.turmas.reduce((prev, current) =>
+        Number(prev.id) > Number(current.id) ? prev : current
+      );
+      const { id } = maxTurma;
+      const turmas = prevState.turmas.concat({ id: id + 1, nome: text });
+      this.handleSave(turmas);
+      return { turmas };
+    });
+  };
+
   render() {
     const { turmas, dic } = this.state;
 
     return (
       <div className="turmas">
-        <ListTurmas turmas={turmas} dic={dic} onDelete={this.handleDelete} onEdit={this.handleEdit} />
+        <NewTurma onAddTurma={this.handleAddTurma} />
+        <ListTurmas
+          turmas={turmas}
+          dic={dic}
+          onDelete={this.handleDelete}
+          onEdit={this.handleEdit}
+        />
         <ToastContainer />
       </div>
     );

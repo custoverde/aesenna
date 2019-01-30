@@ -32035,7 +32035,100 @@ function (_React$Component) {
 
 var _default = ListAlunos;
 exports.default = _default;
-},{"react":"../node_modules/react/index.js","./ListItemAluno":"components/ListItemAluno.js"}],"containers/Alunos.js":[function(require,module,exports) {
+},{"react":"../node_modules/react/index.js","./ListItemAluno":"components/ListItemAluno.js"}],"components/NewAluno.js":[function(require,module,exports) {
+"use strict";
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.default = void 0;
+
+var _react = _interopRequireDefault(require("react"));
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof = function _typeof(obj) { return typeof obj; }; } else { _typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof(obj); }
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
+
+function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); return Constructor; }
+
+function _possibleConstructorReturn(self, call) { if (call && (_typeof(call) === "object" || typeof call === "function")) { return call; } return _assertThisInitialized(self); }
+
+function _assertThisInitialized(self) { if (self === void 0) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return self; }
+
+function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.getPrototypeOf : function _getPrototypeOf(o) { return o.__proto__ || Object.getPrototypeOf(o); }; return _getPrototypeOf(o); }
+
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function"); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, writable: true, configurable: true } }); if (superClass) _setPrototypeOf(subClass, superClass); }
+
+function _setPrototypeOf(o, p) { _setPrototypeOf = Object.setPrototypeOf || function _setPrototypeOf(o, p) { o.__proto__ = p; return o; }; return _setPrototypeOf(o, p); }
+
+var NewAluno =
+/*#__PURE__*/
+function (_React$Component) {
+  _inherits(NewAluno, _React$Component);
+
+  function NewAluno() {
+    var _getPrototypeOf2;
+
+    var _this;
+
+    var _temp;
+
+    _classCallCheck(this, NewAluno);
+
+    for (var _len = arguments.length, args = new Array(_len), _key = 0; _key < _len; _key++) {
+      args[_key] = arguments[_key];
+    }
+
+    return _possibleConstructorReturn(_this, (_temp = _this = _possibleConstructorReturn(this, (_getPrototypeOf2 = _getPrototypeOf(NewAluno)).call.apply(_getPrototypeOf2, [this].concat(args))), _this.state = {
+      text: ''
+    }, _temp));
+  }
+
+  _createClass(NewAluno, [{
+    key: "render",
+    value: function render() {
+      var _this2 = this;
+
+      var onAddAluno = this.props.onAddAluno;
+      var text = this.state.text;
+      return _react.default.createElement("div", {
+        className: "new-item"
+      }, _react.default.createElement("input", {
+        type: "text",
+        className: "new-item__input",
+        placeholder: "Digite o novo aluno aqui...",
+        value: text,
+        onChange: function onChange(event) {
+          _this2.setState({
+            text: event.target.value
+          });
+        },
+        onKeyPress: function onKeyPress(event) {
+          console.log('chegou');
+
+          if (event.key === 'Enter') {
+            console.log('chegou 2');
+            onAddAluno(event.target.value);
+
+            _this2.setState({
+              text: ''
+            });
+          }
+        }
+      }));
+    }
+  }]);
+
+  return NewAluno;
+}(_react.default.Component);
+
+var _default = NewAluno;
+exports.default = _default;
+},{"react":"../node_modules/react/index.js"}],"containers/Alunos.js":[function(require,module,exports) {
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -32052,6 +32145,8 @@ require("react-toastify/dist/ReactToastify.css");
 var _AlunoService = _interopRequireDefault(require("../services/AlunoService"));
 
 var _ListAlunos = _interopRequireDefault(require("../components/ListAlunos"));
+
+var _NewAluno = _interopRequireDefault(require("../components/NewAluno"));
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -32139,6 +32234,25 @@ function (_React$Component) {
           reloadHasError: true
         });
       });
+    }, _this.handleAddAluno = function (text) {
+      _this.setState(function (prevState) {
+        var maxAluno = prevState.alunos.reduce(function (prev, current) {
+          return Number(prev.id) > Number(current.id) ? prev : current;
+        });
+        var id = maxAluno.id;
+        console.log('maxAluno', maxAluno, 'id', id);
+        var alunos = prevState.alunos.concat({
+          id: id + 1,
+          nome: text,
+          turmaId: -1
+        });
+
+        _this.handleSave(alunos);
+
+        return {
+          alunos: alunos
+        };
+      });
     }, _this.handleSave = function (alunos) {
       _AlunoService.default.save(alunos).then(function () {
         _this.setState({
@@ -32175,7 +32289,9 @@ function (_React$Component) {
       var alunos = this.state.alunos;
       return _react.default.createElement("div", {
         className: "alunos"
-      }, _react.default.createElement(_ListAlunos.default, {
+      }, _react.default.createElement(_NewAluno.default, {
+        onAddAluno: this.handleAddAluno
+      }), _react.default.createElement(_ListAlunos.default, {
         alunos: alunos,
         onDelete: this.handleDelete,
         onEdit: this.handleEdit
@@ -32188,7 +32304,7 @@ function (_React$Component) {
 
 var _default = Alunos;
 exports.default = _default;
-},{"react":"../node_modules/react/index.js","react-toastify":"../node_modules/react-toastify/lib/index.js","react-toastify/dist/ReactToastify.css":"../node_modules/react-toastify/dist/ReactToastify.css","../services/AlunoService":"services/AlunoService.js","../components/ListAlunos":"components/ListAlunos.js"}],"components/ListItemTurma.js":[function(require,module,exports) {
+},{"react":"../node_modules/react/index.js","react-toastify":"../node_modules/react-toastify/lib/index.js","react-toastify/dist/ReactToastify.css":"../node_modules/react-toastify/dist/ReactToastify.css","../services/AlunoService":"services/AlunoService.js","../components/ListAlunos":"components/ListAlunos.js","../components/NewAluno":"components/NewAluno.js"}],"components/ListItemTurma.js":[function(require,module,exports) {
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -32487,7 +32603,97 @@ function () {
 
 var _default = TurmaService;
 exports.default = _default;
-},{}],"containers/Turmas.js":[function(require,module,exports) {
+},{}],"components/NewTurma.js":[function(require,module,exports) {
+"use strict";
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.default = void 0;
+
+var _react = _interopRequireDefault(require("react"));
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof = function _typeof(obj) { return typeof obj; }; } else { _typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof(obj); }
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
+
+function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); return Constructor; }
+
+function _possibleConstructorReturn(self, call) { if (call && (_typeof(call) === "object" || typeof call === "function")) { return call; } return _assertThisInitialized(self); }
+
+function _assertThisInitialized(self) { if (self === void 0) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return self; }
+
+function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.getPrototypeOf : function _getPrototypeOf(o) { return o.__proto__ || Object.getPrototypeOf(o); }; return _getPrototypeOf(o); }
+
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function"); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, writable: true, configurable: true } }); if (superClass) _setPrototypeOf(subClass, superClass); }
+
+function _setPrototypeOf(o, p) { _setPrototypeOf = Object.setPrototypeOf || function _setPrototypeOf(o, p) { o.__proto__ = p; return o; }; return _setPrototypeOf(o, p); }
+
+var NewTurma =
+/*#__PURE__*/
+function (_React$Component) {
+  _inherits(NewTurma, _React$Component);
+
+  function NewTurma() {
+    var _getPrototypeOf2;
+
+    var _this;
+
+    var _temp;
+
+    _classCallCheck(this, NewTurma);
+
+    for (var _len = arguments.length, args = new Array(_len), _key = 0; _key < _len; _key++) {
+      args[_key] = arguments[_key];
+    }
+
+    return _possibleConstructorReturn(_this, (_temp = _this = _possibleConstructorReturn(this, (_getPrototypeOf2 = _getPrototypeOf(NewTurma)).call.apply(_getPrototypeOf2, [this].concat(args))), _this.state = {
+      text: ''
+    }, _temp));
+  }
+
+  _createClass(NewTurma, [{
+    key: "render",
+    value: function render() {
+      var _this2 = this;
+
+      var onAddTurma = this.props.onAddTurma;
+      var text = this.state.text;
+      return _react.default.createElement("div", {
+        className: "new-item"
+      }, _react.default.createElement("input", {
+        type: "text",
+        className: "new-item__input",
+        placeholder: "Digitea nova turma aqui...",
+        value: text,
+        onChange: function onChange(event) {
+          _this2.setState({
+            text: event.target.value
+          });
+        },
+        onKeyPress: function onKeyPress(event) {
+          if (event.key === 'Enter') {
+            onAddTurma(event.target.value);
+
+            _this2.setState({
+              text: ''
+            });
+          }
+        }
+      }));
+    }
+  }]);
+
+  return NewTurma;
+}(_react.default.Component);
+
+var _default = NewTurma;
+exports.default = _default;
+},{"react":"../node_modules/react/index.js"}],"containers/Turmas.js":[function(require,module,exports) {
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -32506,6 +32712,8 @@ var _ListTurmas = _interopRequireDefault(require("../components/ListTurmas"));
 var _TurmaService = _interopRequireDefault(require("../services/TurmaService"));
 
 var _AlunoService = _interopRequireDefault(require("../services/AlunoService"));
+
+var _NewTurma = _interopRequireDefault(require("../components/NewTurma"));
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -32552,7 +32760,7 @@ function (_React$Component) {
       turmas: [],
       dic: {}
     }, _this.handleDelete = function (id) {
-      _AlunoService.default.dealocateOfTurmaId(id).then(function (ok) {
+      _TurmaService.default.dealocateOfTurmaId(id).then(function (ok) {
         if (ok) {
           _this.setState(function (prevState) {
             var newTurmas = prevState.turmas.slice();
@@ -32596,6 +32804,8 @@ function (_React$Component) {
       });
     }, _this.handleReload = function () {
       _TurmaService.default.load().then(function (turmas) {
+        console.log('chegouy');
+
         _AlunoService.default.AlunosPorTurma().then(function (dic) {
           _this.setState({
             turmas: turmas,
@@ -32608,6 +32818,23 @@ function (_React$Component) {
           isLoading: false,
           reloadHasError: true
         });
+      });
+    }, _this.handleAddTurma = function (text) {
+      _this.setState(function (prevState) {
+        var maxTurma = prevState.turmas.reduce(function (prev, current) {
+          return Number(prev.id) > Number(current.id) ? prev : current;
+        });
+        var id = maxTurma.id;
+        var turmas = prevState.turmas.concat({
+          id: id + 1,
+          nome: text
+        });
+
+        _this.handleSave(turmas);
+
+        return {
+          turmas: turmas
+        };
       });
     }, _temp));
   }
@@ -32636,7 +32863,9 @@ function (_React$Component) {
           dic = _this$state.dic;
       return _react.default.createElement("div", {
         className: "turmas"
-      }, _react.default.createElement(_ListTurmas.default, {
+      }, _react.default.createElement(_NewTurma.default, {
+        onAddTurma: this.handleAddTurma
+      }), _react.default.createElement(_ListTurmas.default, {
         turmas: turmas,
         dic: dic,
         onDelete: this.handleDelete,
@@ -32650,7 +32879,7 @@ function (_React$Component) {
 
 var _default = Turmas;
 exports.default = _default;
-},{"react":"../node_modules/react/index.js","react-toastify":"../node_modules/react-toastify/lib/index.js","react-toastify/dist/ReactToastify.css":"../node_modules/react-toastify/dist/ReactToastify.css","../components/ListTurmas":"components/ListTurmas.js","../services/TurmaService":"services/TurmaService.js","../services/AlunoService":"services/AlunoService.js"}],"components/turmas/ViewTurma.js":[function(require,module,exports) {
+},{"react":"../node_modules/react/index.js","react-toastify":"../node_modules/react-toastify/lib/index.js","react-toastify/dist/ReactToastify.css":"../node_modules/react-toastify/dist/ReactToastify.css","../components/ListTurmas":"components/ListTurmas.js","../services/TurmaService":"services/TurmaService.js","../services/AlunoService":"services/AlunoService.js","../components/NewTurma":"components/NewTurma.js"}],"components/turmas/ViewTurma.js":[function(require,module,exports) {
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -33341,7 +33570,7 @@ var parent = module.bundle.parent;
 if ((!parent || !parent.isParcelRequire) && typeof WebSocket !== 'undefined') {
   var hostname = "" || location.hostname;
   var protocol = location.protocol === 'https:' ? 'wss' : 'ws';
-  var ws = new WebSocket(protocol + '://' + hostname + ':' + "60835" + '/');
+  var ws = new WebSocket(protocol + '://' + hostname + ':' + "57914" + '/');
 
   ws.onmessage = function (event) {
     var data = JSON.parse(event.data);

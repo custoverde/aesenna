@@ -5,6 +5,7 @@ import 'react-toastify/dist/ReactToastify.css';
 
 import AlunoService from '../services/AlunoService';
 import ListAlunos from '../components/ListAlunos';
+import NewAluno from '../components/NewAluno';
 
 class Alunos extends React.Component {
   state = {
@@ -41,7 +42,6 @@ class Alunos extends React.Component {
   };
 
   handleEdit = (id, text) => {
-
     this.setState(prevState => {
       const newAlunos = prevState.alunos.slice();
       const index = newAlunos.findIndex(aluno => aluno.id === id);
@@ -56,7 +56,7 @@ class Alunos extends React.Component {
   };
 
   handleReload = () => {
-    this.setState({isLoading:true});
+    this.setState({ isLoading: true });
     AlunoService.load()
       .then(alunos => {
         this.setState({ alunos, isLoading: false });
@@ -66,18 +66,34 @@ class Alunos extends React.Component {
       });
   };
 
-  handleSave = alunos => {
-    AlunoService.save(alunos).then(() =>{
-      this.setState({isLoading:false});
-    }).catch(() => {
-      this.setState({ isLoading: false, saveHasError: true });
+  handleAddAluno = text => {
+    this.setState(prevState => {
+      const maxAluno = prevState.alunos.reduce((prev, current) =>
+        Number(prev.id) > Number(current.id) ? prev : current
+      );
+      const { id } = maxAluno;
+      console.log('maxAluno', maxAluno, 'id', id);
+      const alunos = prevState.alunos.concat({ id: id + 1, nome: text, turmaId: -1 });
+      this.handleSave(alunos);
+      return { alunos };
     });
-  }
+  };
+
+  handleSave = alunos => {
+    AlunoService.save(alunos)
+      .then(() => {
+        this.setState({ isLoading: false });
+      })
+      .catch(() => {
+        this.setState({ isLoading: false, saveHasError: true });
+      });
+  };
 
   render() {
     const { alunos } = this.state;
     return (
       <div className="alunos">
+        <NewAluno onAddAluno={this.handleAddAluno} />
         <ListAlunos alunos={alunos} onDelete={this.handleDelete} onEdit={this.handleEdit} />
         <ToastContainer />
       </div>
